@@ -19,6 +19,9 @@ export default function HomeComponent() {
     return (
         <>
         <div className='outer-container'>
+            <h2 className="cta-title">
+                Try It Now
+            </h2>
             <div className="phone-container-main">
                 <div className="overlay">
                     <div className="top-hud">

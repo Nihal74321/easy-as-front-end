@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './styles/documentation.css';
 import iphone from './assets/iphone-16-ultramarine-custom-close-view.png'
+import padlock from './assets/secure-lock-close-up-gradient.png'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export default function Documentation() {
@@ -31,26 +32,32 @@ export default function Documentation() {
                 <div className="doc-card">
                     <div className="text">
                         <h2 className='text-header'>Super Simple.</h2>
-                        <p className='text-sub'>Clean and to the point</p>
+                        <p className='text-sub'>Clean UI. Built with you in mind. Quick to learn, fun to use. </p>
                     </div>
-                    <img src={iphone} alt="slide 1" />
+                    <div className="iphone">
+                        <img src={iphone} alt="slide 1" />
+                    </div>
                 </div>
-                <div className="doc-card">
+                <div className="doc-card card-2">
                 <div className="text">
                         <h2 className='text-header'>Super Secure.</h2>
-                        <p className='text-sub'>Clean and to the point</p>
+                        <p className='text-sub'>Your data is yours and yours only. Sensitive information is kept away from prying eyes.</p>
                     </div>
-                    <img src={iphone} alt="slide 2" />
+                    <div className="lock-wrapper">
+                        <img src={padlock} alt="padlock" />
+                    </div>
                 </div>
-                <div className="doc-card">
-                <div className="text">
+                <div className="doc-card card-2">
+                    <div className="text">
                         <h2 className='text-header'>Super Elegant.</h2>
-                        <p className='text-sub'>Clean and to the point</p>
+                        <p className='text-sub'>Very demure, very mindful.</p>
                     </div>
-                    <img src={iphone} alt="slide 3" />
                 </div>
-                <div className="doc-card">
-                    <img src={iphone} alt="slide 4" />
+                <div className="doc-card card-3">
+                    <div className="text">
+                        <h2 className='text-header'>Super Powered.</h2>
+                        <p className='text-sub'>Blazing fast, highly optimised. Built for speed, so you never    have to wait to learn.</p>
+                    </div>
                 </div>
             </div>
             <div className="buttons">
