@@ -46,6 +46,7 @@ export default function HomeComponent() {
                     <App />
                 </div>
             </div>
+            <p className="warning-text">Some features may not be available.</p>
         </div>
         </>
     )

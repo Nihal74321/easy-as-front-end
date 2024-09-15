@@ -4,12 +4,14 @@ import './index.css';
 import Documentation from './documentation';
 import HomeComponent from './components/main';
 import reportWebVitals from './reportWebVitals';
+import DocumentVideo from './documentation-video';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Documentation />
     <HomeComponent />
+    <DocumentVideo />
   </React.StrictMode>
 );
 
