@@ -299,7 +299,7 @@ const Settings =  () => {
   return(
     <>
     <div className={`profile-container ${showSetting ? "setting-active" : ""}`}>
-      <div className="header">
+      <div className="settings-header">
         <div className="back-container">
           <p className={`home ${showHome ? "" : "dont-show-home"}`} onClick={()=> navigate('/')}>done</p>
         </div>

@@ -323,7 +323,7 @@
 .user-container:active {
     transform: scale(97%);
 }
-.header {
+.settings-header {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -334,6 +334,7 @@
     padding: 0;
     margin: 0;
     padding-bottom: 1.5rem;
+    font-size: 2rem !important;
 }
 .home {
     padding: 0;
