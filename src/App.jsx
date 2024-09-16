@@ -5,6 +5,7 @@ import { FaUserGroup, FaVideo } from "react-icons/fa6";
 import { MdNavigateNext } from "react-icons/md";
 import { FiAlignLeft } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
+import { HiOutlinePencil } from "react-icons/hi";
 import './styles/main-app.css'
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 
@@ -164,6 +165,10 @@ const Tutors = () => {
 
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
+  const [nickname, setNickname] = useState();
+  const [showNickName, setShowNickname] = useState(false);
+  const [changedName, setChangedName] = useState(false);
+  const [updateID, setId] = useState();
   const navigate = useNavigate();
   const fetchBookings = async () => {
     const response = await fetch(`${url}/get-bookings`)
@@ -180,9 +185,38 @@ const Bookings = () => {
     })
     fetchBookings();
   }
+
+  const fetchUpdateReq = (id) => {
+    setId(id);
+    setShowNickname(true)
+  }
+
+  const update = async () => {
+    try {
+      const response = await fetch(`${url}/update-book/${updateID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: nickname })
+      });
+  
+      if (response.ok) {
+        setNickname("");
+        setShowNickname(false);
+        await fetchBookings();
+      } else {
+        const errorData = await response.json();
+        console.error('Update failed:', errorData);
+      }
+    } catch (error) {
+      console.error('Update error:', error);
+    }
+  };
+  
   return (
     <>
-    <div className="bookings-container">
+    <div className={`bookings-container ${showNickName ? "scale-out" : ""}`}>
       <div className="home booking-go-back" onClick={() => navigate('/settings')}>
         <IoIosArrowBack className="back"/>
         <p>Settings</p>
@@ -201,8 +235,13 @@ const Bookings = () => {
               <p className="book-date">{b.session.date}</p>
             </div>
           </div>
-          <div className="cancel-button" onClick={() => deleteItem(b._id)}>
-            <IoIosClose size={30}/>
+          <div className="action-buttons">
+            <div className="update-button cancel-button" onClick={()=> fetchUpdateReq(b._id)}>
+              <HiOutlinePencil size={30}/>
+            </div>
+            <div className="cancel-button" onClick={() => deleteItem(b._id)}>
+              <IoIosClose size={30}/>
+          </div>
           </div>
         </div>
         </>
@@ -221,6 +260,31 @@ const Bookings = () => {
           </div>
         </div>
       )}
+      </div>
+    </div>
+    <div className={`update-wrapper ${showNickName ? "visible" : ""}`}>
+      <div className="update-container">
+        <div className="container">
+          <div className="cancel">
+            <p onClick={() => {
+              setNickname("");
+              setShowNickname(false)
+              }}>Cancel</p>
+          </div>
+          <h2 className="update-title">Give this booking a nickname</h2>
+          <input type="text" className="nickname-booking" value={nickname} onChange={(e) => {
+            if(e.target.value) {
+              setChangedName(true)
+            }
+            else {
+              setChangedName(false)
+            }
+            setNickname(e.target.value)
+            }} placeholder="Nickname"/>
+        </div>
+        <div className={`update-complete ${changedName ? "enable" : ""}`} onClick={()=> {
+          changedName ? update() : console.log('nope')
+        }}>Update</div>
       </div>
     </div>
     </>
