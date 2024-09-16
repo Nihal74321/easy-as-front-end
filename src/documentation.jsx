@@ -8,9 +8,9 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export default function Documentation() {
     const [currentSlide, setCurrentSlide] = useState(0);
-    const totalSlides = 2; // Number of slides
+    const totalSlides = 4; // Number of slides
 
-    const cardWidth = 26; // Width of each card in rem
+    const cardWidth = 52; // Width of each card in rem
 
     const handleNext = () => {
         setCurrentSlide((prev) => (prev + 1) % totalSlides);
