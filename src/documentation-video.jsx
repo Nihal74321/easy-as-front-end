@@ -4,7 +4,7 @@ import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import poster from './assets/long-video-poster-desktop.png'
-import MidResVideo from './assets/videos/6212-easy-as-guided_tour-1080p.mp4';
+import MidResVideo from './assets/videos/6212-easy-as-guided_tour-low-res.mp4';
 
 export default function DocumentVideo() {
     const [handleVideo, setHandleVideo] = useState();
