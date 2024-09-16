@@ -165,31 +165,32 @@ const Tutors = () => {
 
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
-  const [nickname, setNickname] = useState();
+  const [nickname, setNickname] = useState('');
   const [showNickName, setShowNickname] = useState(false);
   const [changedName, setChangedName] = useState(false);
-  const [updateID, setId] = useState();
+  const [updateID, setId] = useState('');
   const navigate = useNavigate();
+
   const fetchBookings = async () => {
-    const response = await fetch(`${url}/get-bookings`)
+    const response = await fetch(`${url}/get-bookings`);
     setBookings(await response.json());
   };
 
   useEffect(() => {
     fetchBookings();
   }, []);
-  
+
   const deleteItem = (id) => {
     fetch(`${url}/bookings/${id}`, {
-      method: 'DELETE'
-    })
+      method: 'DELETE',
+    });
     fetchBookings();
-  }
+  };
 
   const fetchUpdateReq = (id) => {
     setId(id);
-    setShowNickname(true)
-  }
+    setShowNickname(true);
+  };
 
   const update = async () => {
     try {
@@ -198,11 +199,11 @@ const Bookings = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: nickname })
+        body: JSON.stringify({ name: nickname }),
       });
-  
+
       if (response.ok) {
-        setNickname("");
+        setNickname('');
         setShowNickname(false);
         await fetchBookings();
       } else {
@@ -213,83 +214,95 @@ const Bookings = () => {
       console.error('Update error:', error);
     }
   };
-  
+
+  const handleCancel = () => {
+    setNickname('');
+    setChangedName(false); // Reset changedName state on cancel
+    setShowNickname(false);
+  };
+
   return (
     <>
-    <div className={`bookings-container ${showNickName ? "scale-out" : ""}`}>
-      <div className="home booking-go-back" onClick={() => navigate('/settings')}>
-        <IoIosArrowBack className="back"/>
-        <p>Settings</p>
+      <div className={`bookings-container ${showNickName ? 'scale-out' : ''}`}>
+        <div className="home booking-go-back" onClick={() => navigate('/settings')}>
+          <IoIosArrowBack className="back" />
+          <p>Settings</p>
+        </div>
+        <h1 className="book-header">Your Bookings</h1>
+        <div className="booking-container">
+          {bookings.length > 0 ? bookings.map((b) => (
+            <div className="booking" key={b._id}>
+              <div className="book-text">
+                {b.tutor.name.length > 19 ? (
+                  <marquee className="book-name" behavior="" direction="">{b.tutor.name}</marquee>
+                ): (
+                  <p className="book-name">{b.tutor.name}</p>
+                )}
+                <div className="book-when">
+                  <p className="book-time">
+                    {b.session.time >= 12
+                      ? b.session.time === 12
+                        ? `${b.session.time}PM`
+                        : `${b.session.time - 12}PM`
+                      : `${b.session.time}AM`}
+                  </p>
+                  <p className="book-date">{b.session.date}</p>
+                </div>
+              </div>
+              <div className="action-buttons">
+                <div className="update-button cancel-button" onClick={() => fetchUpdateReq(b._id)}>
+                  <HiOutlinePencil size={30} />
+                </div>
+                <div className="cancel-button" onClick={() => deleteItem(b._id)}>
+                  <IoIosClose size={30} />
+                </div>
+              </div>
+            </div>
+          )) : (
+            <div className="no-booking">
+              <div className="no-book-logo">
+                <FiAlignLeft size={100} />
+              </div>
+              <div className="no-book-text">
+                <p className="no-book-par">No bookings available</p>
+                <div className="active-send-no-book">
+                  <p>click</p>
+                  <p className="home no-book-home" onClick={() => navigate('/')}>here</p>
+                  <p>to start booking</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-      <h1 className="book-header">Your Bookings</h1>
-      <div className="booking-container">
-      {bookings.length > 0 ? bookings.map((b) => (
-        <>
-        <div className="booking" key={b._id}>
-          <div className="book-text">
-            <p className="book-name">
-              {b.tutor.name}
-            </p>
-            <div className="book-when">
-              <p className="book-time">{b.session.time >= 12 ? b.session.time === 12 ? `${b.session.time}PM`  : `${b.session.time - 12}PM` : `${b.session.time}AM`}</p>
-              <p className="book-date">{b.session.date}</p>
+      <div className={`update-wrapper ${showNickName ? 'visible' : ''}`}>
+        <div className="update-container">
+          <div className="container">
+            <div className="cancel">
+              <p onClick={handleCancel}>Cancel</p>
             </div>
+            <h2 className="update-title">Give this booking a nickname</h2>
+            <input
+              type="text"
+              className="nickname-booking"
+              value={nickname}
+              onChange={(e) => {
+                const value = e.target.value;
+                setChangedName(value.trim() !== ''); // Check if there's any value
+                setNickname(value);
+              }}
+              placeholder="Nickname"
+            />
           </div>
-          <div className="action-buttons">
-            <div className="update-button cancel-button" onClick={()=> fetchUpdateReq(b._id)}>
-              <HiOutlinePencil size={30}/>
-            </div>
-            <div className="cancel-button" onClick={() => deleteItem(b._id)}>
-              <IoIosClose size={30}/>
-          </div>
+          <div className={`update-complete ${changedName ? 'enable' : ''}`} onClick={() => changedName && update()}>
+            Update
           </div>
         </div>
-        </>
-      )) : (
-        <div className="no-booking">
-          <div className="no-book-logo">
-            <FiAlignLeft size={100}/>
-          </div>
-          <div className="no-book-text">
-            <p className="no-book-par">No bookings available</p>
-            <div className="active-send-no-book">
-              <p>click</p> 
-              <p className="home no-book-home" onClick={() => navigate('/')}>here</p>
-              <p>to start booking</p>
-            </div>
-          </div>
-        </div>
-      )}
       </div>
-    </div>
-    <div className={`update-wrapper ${showNickName ? "visible" : ""}`}>
-      <div className="update-container">
-        <div className="container">
-          <div className="cancel">
-            <p onClick={() => {
-              setNickname("");
-              setShowNickname(false)
-              }}>Cancel</p>
-          </div>
-          <h2 className="update-title">Give this booking a nickname</h2>
-          <input type="text" className="nickname-booking" value={nickname} onChange={(e) => {
-            if(e.target.value) {
-              setChangedName(true)
-            }
-            else {
-              setChangedName(false)
-            }
-            setNickname(e.target.value)
-            }} placeholder="Nickname"/>
-        </div>
-        <div className={`update-complete ${changedName ? "enable" : ""}`} onClick={()=> {
-          changedName ? update() : console.log('nope')
-        }}>Update</div>
-      </div>
-    </div>
     </>
   );
 };
+
 
 const Profile = (props) => {
   const [profile, setProfile] = useState([]);

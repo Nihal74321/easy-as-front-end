@@ -531,7 +531,7 @@
     color: var(--gray);
 }
 .book-date {
-    color: var(--indigo);
+    color: var(--yellow);
     text-decoration: underline;
 }
 .cancel-button {
