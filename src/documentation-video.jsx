@@ -3,6 +3,10 @@ import './styles/doc-vid.css'
 import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import poster from './assets/long-video-poster-desktop.png'
+import HighResVideo from './assets/videos/6212-easy-as-guided_tour-4k.mp4';
+import MidResVideo from './assets/videos/6212-easy-as-guided_tour-1080p.mp4';
+import LowRedVideo from './assets/videos/6212-easy-as-guided_tour-low-scale.mp4'
 
 export default function DocumentVideo() {
     const [handleVideo, setHandleVideo] = useState();
@@ -13,9 +17,14 @@ export default function DocumentVideo() {
             window.scrollTo(0,0);
         } else if (handleVideo === false){
             const videoElement = document.getElementById('video');
+            const video = document.getElementById('video-play');
             if (videoElement) {
                 videoElement.scrollIntoView({ behavior: 'smooth' });
             }
+            if(!video.paused) {
+                video.pause();
+            }
+            video.currentTime = 0;
         }
         return () => {
             document.body.style.overflow = 'auto';
@@ -30,7 +39,7 @@ export default function DocumentVideo() {
                     <IoClose className='close-button' onClick={() => setHandleVideo(false)}/>
                 </div>
                 <div className="video-container-full">
-
+                    <video className="video-player" id='video-play' autoPlay={true} src={HighResVideo} controls></video>
                 </div>
                 <div className="controls-full"></div>
             </div>
@@ -40,15 +49,12 @@ export default function DocumentVideo() {
             </div>
             <div className="" id='video'>
                 <div className="container-video">
+                    <img src={poster} alt="poster-video" />
                     <div className="toggle-video-big">
                         <FaPlay onClick={() => setHandleVideo(true)}/>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div className="table-temp">
-
         </div>
         </>
     )
